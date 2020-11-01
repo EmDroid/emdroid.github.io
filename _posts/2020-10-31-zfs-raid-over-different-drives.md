@@ -379,6 +379,21 @@ zfs create \
 
 zfs create xpool/DATA/data/unstable/Test
 
+zfs create \
+    -o com.ubuntu.zsys:bootfs=no \
+    -o mountpoint=none \
+    xpool/DATA/data/shared
+
+zfs create \
+    -o mountpoint=/data/shared/Drivers \
+    xpool/DATA/data/shared/Drivers
+
+zfs create \
+    -o com.ubuntu.zsys:bootfs=no \
+    xpool/DATA/data/media
+
+zfs create xpool/DATA/data/media/Video
+
 # etc. - create data sets as needed
 # ...
 
