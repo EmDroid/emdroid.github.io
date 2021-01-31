@@ -647,6 +647,23 @@ I was measuring the temperatures under Ubuntu Linux as described in each section
 
 In particular it is not entirely necessary to install the OS to do the measurements, as that can be done as well by using a live bootable USB, for example the [Ubuntu Live USB](https://ubuntu.com/tutorials/create-a-usb-stick-on-windows#1-overview).
 
+However if running off the Ubuntu Live Desktop, the "`apt`" data sources need to be updated (as the Live Desktop is missing the ones needed for installing the tools):
+
+```bash
+# list the existing sources
+sudo cat /etc/apt/sources.list
+
+# add the "universe" sources
+# - use the same distribution name as listed, for example "focal"
+sudo echo "deb http://archive.ubuntu.com/ubuntu/ focal universe" \
+    >> /etc/apt/sources.list
+sudo echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates universe" \
+    >> /etc/apt/sources.list
+
+# update the apt database
+sudo apt update
+```
+
 ### 3.1. The CPU temperatures
 
 The CPU temperatures were measured by the Ubuntu "sensors" command.
