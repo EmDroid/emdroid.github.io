@@ -248,7 +248,7 @@ apt install -y \
     dosfstools mdadm linux-image-generic shim-signed \
     grub-efi-amd64 grub-efi-amd64-signed \
     zfs-initramfs zsys zfs-zed zfsutils-linux \
-    gdisk vim
+    hwinfo gdisk vim
 ```
 
 - for non-UEFI (legacy) Bios:
@@ -257,7 +257,7 @@ apt install -y \
 apt install -y \
     dosfstools mdadm linux-image-generic grub-pc \
     zfs-initramfs zsys zfs-zed zfsutils-linux \
-    gdisk vim
+    hwinfo gdisk vim
 ```
 
 **c) Enable sudo access without password** (optional):
