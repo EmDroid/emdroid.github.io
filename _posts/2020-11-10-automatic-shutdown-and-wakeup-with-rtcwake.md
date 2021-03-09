@@ -1,7 +1,7 @@
 ---
 title: "Automatic shutdown and wake-up with rtcwake"
 header:
-  teaser: /assets/images/posts/clock-pc.jpg.png
+  teaser: /assets/images/posts/clock-pc.jpg
 toc: true
 categories:
   - Operating Systems
@@ -319,6 +319,15 @@ timedatectl --adjust-system-clock set-local-rtc 0
 ```
 
 Note that the "--adjust-system-clock" option can be used to adjust the time immediately.
+
+In some cases the system RTC clock is still not synced; in such case you can use the "`hwclock`" to sync explicitly:
+
+```bash
+hwclock --systohc --localtime
+
+# check the status
+timedatectl status
+```
 
 ## 6. Summary
 

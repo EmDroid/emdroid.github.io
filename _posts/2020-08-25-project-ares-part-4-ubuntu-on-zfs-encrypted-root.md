@@ -394,7 +394,7 @@ sgdisk -p ${DISK[2]}
 # (note that if there are any LVM volumes currently active, they'd need to be removed first)
 wipefs --all ${DISK[2]}
 
-# create a new LVM partition for backing up the primary disk
+# create a new partition for backing up the primary disk
 sgdisk -n1:0:0 -t1:8300 ${DISK[2]}
 
 # check by listing the partitions
