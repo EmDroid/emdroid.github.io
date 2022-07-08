@@ -19,7 +19,7 @@ tags:
   - truecrypt
 ---
 
-![NAS OS](/assets/images/posts/nas-ares/raid-5.png){: .align-center .img-large}
+![RAID-5](/assets/images/posts/nas-ares/raid-5.png){: .align-center .img-large}
 
 Sharing the experience of building a home NAS/VM server.
 
@@ -603,7 +603,7 @@ zpool status dpool
 {% capture notice_contents %}
 **<a name="data_pool_note">Notes</a>**:
 
-- the array is created over the whole physical disks, which has some advantates for the ZFS maintenance
+- the array is created over the whole physical disks, which has some advantages for the ZFS maintenance
 (in particular, the ZFS subsystem can manage the disk itself, reportedly switching off the "standard" IO scheduler as it provides its own) [^8]
 - the ZFS subsystem still creates partitions over the disks, while leaving some small space at the end to accommodate for eventual slight disk size differences
 - the pool itself is not encrypted, the encryption will be done on the dataset level [^9]
@@ -637,6 +637,9 @@ zfs create \
     -o mountpoint=none \
     dpool/DATA
 
+# create the cache file
+touch /etc/zfs/zfs-list.cache/dpool
+
 # create the main mount data set
 # (setting up the encryption)
 zfs create \
@@ -647,17 +650,29 @@ zfs create \
     -o keylocation=file:///etc/crypt/zfs/data.key \
     dpool/DATA/data
 
+# mount the data set
+zfs mount dpool/DATA/data
+
 # create media data sets
 zfs create \
     -o com.ubuntu.zsys:bootfs=no \
     dpool/DATA/data/media
 
-zfs create dpool/DATA/data/media/movies
 zfs create dpool/DATA/data/media/pictures
 zfs create dpool/DATA/data/media/music
+zfs create dpool/DATA/data/media/video
 
 # etc. - create data sets as needed
 # ...
+
+# check the cache file
+cat /etc/zfs/zfs-list.cache/dpool
+
+# check the encryption:
+# - expect encrypted
+zfs get encryption /data/media/pictures
+zfs get encryption /data/media/music
+zfs get encryption /data/media/video
 
 # eventually setup some permissions
 chown root:sambashare /data/media/*

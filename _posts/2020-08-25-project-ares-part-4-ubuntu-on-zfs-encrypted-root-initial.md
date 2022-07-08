@@ -20,7 +20,7 @@ tags:
   - raid
 ---
 
-![NAS OS](/assets/images/posts/nas-ares/zol.png){: .align-center .img-large}
+![ZFS-on-Linux](/assets/images/posts/nas-ares/zol.png){: .align-center .img-large}
 
 Sharing the experience of building a home NAS/VM server.
 
@@ -1218,7 +1218,7 @@ reboot
 
 In the next part we will complete the system disk setup (mirroring of the primary drive) and setup the data drives.
 
-[Next: Ubuntu Server on ZFS]({% post_url 2020-08-30-project-ares-part-5-ubuntu-on-zfs-raid %}){: .btn .btn--info}
+[Next: RAID and data drives]({% post_url 2020-08-30-project-ares-part-5-ubuntu-on-zfs-raid-initial %}){: .btn .btn--info}
 {: .align-right}
 
 ## Resources and references

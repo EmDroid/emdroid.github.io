@@ -645,7 +645,31 @@ Especially for the stripped RAID configurations (RAID-5/6) where changing the di
 
 I was measuring the temperatures under Ubuntu Linux as described in each section.
 
+All the commands are to be run with the administrator permissions.
+To not have to repeat "`sudo`" every time, it is recommended to enter the admin console for the task:
+
+```bash
+sudo -i
+```
+
 In particular it is not entirely necessary to install the OS to do the measurements, as that can be done as well by using a live bootable USB, for example the [Ubuntu Live USB](https://ubuntu.com/tutorials/create-a-usb-stick-on-windows#1-overview).
+
+However if running off the Ubuntu Live Desktop, the "`apt`" data sources need to be updated (as the Live Desktop is missing the ones needed for installing the tools):
+
+```bash
+# list the existing sources
+cat /etc/apt/sources.list
+
+# add the "universe" sources
+# - use the same distribution name as listed, for example "focal"
+echo "deb http://archive.ubuntu.com/ubuntu/ focal universe" \
+    >> /etc/apt/sources.list
+echo "deb http://archive.ubuntu.com/ubuntu/ focal-updates universe" \
+    >> /etc/apt/sources.list
+
+# update the apt database
+apt update
+```
 
 ### 3.1. The CPU temperatures
 
@@ -655,33 +679,33 @@ The installation and usage:
 
 ```bash
 # install the sensors package
-sudo apt install -y lm-sensors
+apt install -y lm-sensors
 
 # run the sensors auto-detection
-sudo sensors-detect --auto
+sensors-detect --auto
 
 # show the sensor values
-sudo sensors
+sensors
 ```
 
 Another tool that shows the CPU temperatures in real-time is the "i7z" (it is handy to be able to watch the temperatures changing):
 
 ```bash
 # install the package
-sudo apt install -y i7z
+apt install -y i7z
 
 # run the tool
-sudo i7z
+i7z
 ```
 
 For stress-testing the CPU the "stress" tool has been used:
 
 ```bash
 # install the package
-sudo apt install -y stress
+apt install -y stress
 
 # run the stress test (16 threads, 10 min)
-sudo stress --cpu 16 --timeout 600
+stress --cpu 16 --timeout 600
 ```
 (the timeout is specified in seconds, i.e. the value of "600" means 10 mins)
 
@@ -854,10 +878,10 @@ Used the "hddtemp" to check the temperatures:
 
 ```bash
 # install the package
-sudo apt install -y hddtemp
+apt install -y hddtemp
 
 # show the temperatures of the disks sda to sde
-sudo hddtemp /dev/sd[abcde]
+hddtemp /dev/sd[abcde]
 ```
 
 I was measuring just the idle temperatures so far (left the server idling for about 1 hour and then checking the temps).

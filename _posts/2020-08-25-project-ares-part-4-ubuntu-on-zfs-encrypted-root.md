@@ -19,7 +19,7 @@ tags:
   - raid
 ---
 
-![NAS OS](/assets/images/posts/nas-ares/zol.png){: .align-center .img-large}
+![ZFS-on-Linux](/assets/images/posts/nas-ares/zol.png){: .align-center .img-large}
 
 Sharing the experience of building a home NAS/VM server.
 
@@ -107,7 +107,7 @@ To start installing the OS, we'll need to do some initial preparation:
 
 - [Ubuntu Desktop](https://ubuntu.com/download/desktop) Live DVD (needed for prep, moving to ZFS etc., eventually recovery)
 - [Ubuntu Legacy Server](http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04/release/) (minimal install) or any other release you want to install (can also be the Live DVD if you'd install the Desktop version)
-- alternatively can also use bootstrap a clean Ubuntu initial image (but I prefer to use the aforementioned Server image to have some basic setup done byt the installer)
+- alternatively can also bootstrap a clean Ubuntu initial image (but I prefer to use the aforementioned Server image to have some basic setup done by the installer)
 
 **Disks**:
 
@@ -248,7 +248,7 @@ apt install -y \
     dosfstools mdadm linux-image-generic shim-signed \
     grub-efi-amd64 grub-efi-amd64-signed \
     zfs-initramfs zsys zfs-zed zfsutils-linux \
-    gdisk vim
+    hwinfo gdisk vim
 ```
 
 - for non-UEFI (legacy) Bios:
@@ -257,7 +257,7 @@ apt install -y \
 apt install -y \
     dosfstools mdadm linux-image-generic grub-pc \
     zfs-initramfs zsys zfs-zed zfsutils-linux \
-    gdisk vim
+    hwinfo gdisk vim
 ```
 
 **c) Enable sudo access without password** (optional):
@@ -394,7 +394,7 @@ sgdisk -p ${DISK[2]}
 # (note that if there are any LVM volumes currently active, they'd need to be removed first)
 wipefs --all ${DISK[2]}
 
-# create a new LVM partition for backing up the primary disk
+# create a new partition for backing up the primary disk
 sgdisk -n1:0:0 -t1:8300 ${DISK[2]}
 
 # check by listing the partitions
@@ -1255,7 +1255,7 @@ reboot
 
 In the next part we will complete the system disk setup (mirroring of the primary drive) and setup the data drives.
 
-[Next: Ubuntu Server on ZFS]({% post_url 2020-08-30-project-ares-part-5-ubuntu-on-zfs-raid %}){: .btn .btn--info}
+[Next: RAID and data drives]({% post_url 2020-08-30-project-ares-part-5-ubuntu-on-zfs-raid %}){: .btn .btn--info}
 {: .align-right}
 
 ## Resources and references
