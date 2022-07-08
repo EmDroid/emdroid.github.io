@@ -1,5 +1,6 @@
 ---
 title: "ZFS RAID over different size drives"
+last_modified_at: 2022-07-08
 header:
   teaser: /assets/images/posts/zfs-pool.png
 toc: true
@@ -19,6 +20,10 @@ Creating a ZFS RAID over different size drives (2 x 1 TB + 3 x 2 TB for 8 
 This was done as part of the ["Project Ares" NAS box setup]({% post_url 2020-07-13-project-ares-part-1-choosing-the-hardware %}) for additional data storage.
 
 <!-- more -->
+
+> **Update {{ "2022-07-08" | date_to_string }}**
+> 
+> Added the alternative for adding the new VDEV to existing ZFS pool.
 
 ## 1. Introduction
 
@@ -322,7 +327,7 @@ zpool create -f \
     ${DISK[4]} \
     ${DISK[5]}
 
-# test the pool status
+# check the pool status
 zpool status xpool
 ```
 
@@ -337,6 +342,47 @@ config:
         NAME                                            STATE     READ WRITE CKSUM
         xpool                                           ONLINE       0     0     0
           raidz1-0                                      ONLINE       0     0     0
+            md20                                        ONLINE       0     0     0
+            scsi-SATA_WDC_WD20EURS-73S_WD-WCAZA6521446  ONLINE       0     0     0
+            scsi-SATA_SAMSUNG_HD203WI_S1UYJ1MZ100123    ONLINE       0     0     0
+            scsi-SATA_ST2000LM015-2E81_ZDZ0XVRQ         ONLINE       0     0     0
+
+errors: No known data errors
+```
+
+#### 3.4.1 Alternative: Adding VDEV to existing zpool
+
+As mentioned above, the other option would be to add the VDEV to an existing data zpool.
+I decided to use separate pools for the reasons mentioned, but for the sake of completeness this would be the command to add the VDEV group to an existing zpool to use single space:
+
+```bash
+zpool add dpool \
+    raidz1 \
+    /dev/md20 \
+    ${DISK[3]} \
+    ${DISK[4]} \
+    ${DISK[5]}
+
+# check the pool status
+zpool status dpool
+```
+
+- after this the pool status should show 2 VDEV groups under the single zpool, similar to this (using my ["Project Ares"]({% post_url 2020-07-13-project-ares-part-1-choosing-the-hardware %}) configuration):
+
+```
+  pool: dpool
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME                                            STATE     READ WRITE CKSUM
+        dpool                                           ONLINE       0     0     0
+          raidz1-0                                      ONLINE       0     0     0
+            scsi-SATA_WDC_WD80EZAZ-11T_1EJXU34Z         ONLINE       0     0     0
+            scsi-SATA_WDC_WD80EZAZ-11T_1EK01TEZ         ONLINE       0     0     0
+            scsi-SATA_WDC_WD80EZAZ-11T_1EJU1VUZ         ONLINE       0     0     0
+            scsi-SATA_WDC_WD80EZAZ-11T_1EJRXGYZ         ONLINE       0     0     0
+          raidz1-1                                      ONLINE       0     0     0
             md20                                        ONLINE       0     0     0
             scsi-SATA_WDC_WD20EURS-73S_WD-WCAZA6521446  ONLINE       0     0     0
             scsi-SATA_SAMSUNG_HD203WI_S1UYJ1MZ100123    ONLINE       0     0     0
